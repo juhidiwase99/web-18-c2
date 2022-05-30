@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    
+  </head>
+
+  <style>
+    #bucket{
+      display: grid;
+     grid-template-columns: repeat(4,1fr);
+     gap: 30px;
+    }
+    #box{
+      width: 300px;
+      height: 450px;
+    }
+    img{
+    width: 300px;
+  }
+  p{
+    text-align: center;
+  }
+  </style>
+
+  <body>
+    <div id="total-div">
+      <h3 id="total_amount">
+        <!--Show bucket total here, do not add anything only Total value. Not even "Total - 1200Rs" but like this "1200" -->
+      </h3>
+    </div>
+    <div id="bucket">
+      <!--Show all coffee added to bucket here-->
+      <!-- add an remove button to each coffee so that you can remove that item from bucket, give the button HTML id as 'remove_coffee' -->
+    </div>
+
+    <!-- checkout link  -->
+  </body>
+</html>
+<script>
+  let arr = JSON.parse(localStorage.getItem("coffee"))
+
+console.log(arr.price)
+let total =arr.reduce(function(sum,{price}){
+    return sum + Number(price);
+    document.getElementById("total_amount").innerText=total
+})
+
+
+arr.map(function(el,index){
+    var div = document.createElement("div")
+        let itemimage=document.createElement("img");
+        itemimage.src=el.image;
+        let itemName=document.createElement("h2");
+        itemName.innerText=el.title;
+        let itemprice=document.createElement("h2");
+        itemprice.innerText="RS"+" "+el.price;
+
+        let rebutton = document.createElement("button")
+        rebutton.innerText="Remove"
+        rebutton.setAttribute("id","remove_coffee")
+        rebutton.addEventListener("click",function(){
+            remove(el,index);
+        })
+
+        div.append(itemimage,itemName,itemprice,rebutton)
+        console.log(div)
+        document.querySelector("#bucket").append(div)
+    
+    
+})
+function remove(el,index){
+    arr.splice(index,1)
+    localStorage.setItem("coffee",JSON.stringify(arr))
+    window.location.reload();
+}
+</script>
